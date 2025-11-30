@@ -1,0 +1,30 @@
+{
+   "name": "default",
+   "version": "1.0.0",
+   "description": "",
+   "main": "index.js",
+   "scripts": {
+      "test": "node --env-file=.env --test --experimental-test-coverage",
+      "start-build": "node ./out/src/index.js",
+      "start-raw": "ts-node ./src/index", 
+      "build": "powershell -Command \"npm i; npm run clean; npm run compile-to-out; npm run copy-assets; npm run install-node-modules-to-out\"",
+      "clean": "powershell -Command \"if (Test-Path -Path out) { Remove-Item -Path out -Recurse -Force }\"",
+      "compile-to-out": "tsc --outDir ./out --rootDir ./",
+      "compile-noUnusedLocals": "tsc --outDir ./out --rootDir ./ --noUnusedLocals --noUnusedParameters",
+      "copy-assets": "powershell -Command \"New-Item -ItemType Directory -Force -Path out | Out-Null; Copy-Item -Path ./* -Exclude node_modules, out, src, *.ts, tsconfig.json -Destination out -Recurse -Container -ErrorAction SilentlyContinue\"; cd out; npm i; cd ..",
+      "install-node-modules-to-out": "powershell -Command \"cd out; npm i; cd ..\""
+   },
+   "keywords": [],
+   "author": "",
+   "license": "ISC",
+   "devDependencies": {
+      "@types/node": "^20.12.12",
+      "@types/web": "^0.0.162",
+      "typescript": "^5.6.2"
+   },
+   "dependencies": {
+      "default": "file:",
+      "simple-json-db": "^2.0.0",
+      "telegraf": "^4.16.3"
+   }
+}
